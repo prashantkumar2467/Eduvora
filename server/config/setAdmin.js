@@ -1,0 +1,60 @@
+const db = require('./db');
+const bcrypt = require('bcryptjs');
+
+// Change these credentials to your desired Admin login
+const ADMIN_EMAIL = 'admin@eduvora.com';
+const ADMIN_PASSWORD = 'Admin@123!';
+const ADMIN_NAME = 'Eduvora Super Admin';
+
+async function setupAdmin() {
+    try {
+        const hashedPassword = await bcrypt.hash(ADMIN_PASSWORD, 10);
+
+        // Check if admin already exists
+        const checkSql = `SELECT * FROM users WHERE email = ?`;
+        db.get(checkSql, [ADMIN_EMAIL.toLowerCase()], (err, user) => {
+            if (err) {
+                console.error('Error checking user:', err.message);
+                process.exit(1);
+            }
+
+            if (user) {
+                // Update existing user to admin with the new password
+                const updateSql = `UPDATE users SET name = ?, password = ?, role = 'admin' WHERE email = ?`;
+                db.run(updateSql, [ADMIN_NAME, hashedPassword, ADMIN_EMAIL.toLowerCase()], function (updateErr) {
+                    if (updateErr) {
+                        console.error('Failed to update admin password:', updateErr.message);
+                    } else {
+                        console.log('----------------------------------------------------');
+                        console.log('✅ Admin password updated successfully!');
+                        console.log(`Email:    ${ADMIN_EMAIL}`);
+                        console.log(`Password: ${ADMIN_PASSWORD}`);
+                        console.log('----------------------------------------------------');
+                    }
+                    process.exit(0);
+                });
+            } else {
+                // Insert a brand new admin user
+                const insertSql = `INSERT INTO users (name, email, password, role) VALUES (?, ?, ?, 'admin')`;
+                db.run(insertSql, [ADMIN_NAME, ADMIN_EMAIL.toLowerCase(), hashedPassword], function (insertErr) {
+                    if (insertErr) {
+                        console.error('Failed to create admin user:', insertErr.message);
+                    } else {
+                        console.log('----------------------------------------------------');
+                        console.log('✅ Admin account created successfully!');
+                        console.log(`Email:    ${ADMIN_EMAIL}`);
+                        console.log(`Password: ${ADMIN_PASSWORD}`);
+                        console.log('----------------------------------------------------');
+                    }
+                    process.exit(0);
+                });
+            }
+        });
+    } catch (error) {
+        console.error('Error hashing password:', error);
+        process.exit(1);
+    }
+}
+
+// Run script
+setupAdmin();

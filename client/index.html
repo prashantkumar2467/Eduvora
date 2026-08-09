@@ -1,0 +1,626 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Eduvora - Master Tech & Computer Science Skills</title>
+
+<!-- Fonts -->
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;600;700&family=Bricolage+Grotesque:wght@400;600;800;900&display=swap" rel="stylesheet"/>
+
+<!-- Libraries -->
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
+
+<!-- Tailwind Config -->
+<script>
+tailwind.config={
+  darkMode:"class",
+  theme:{
+    extend:{
+      fontFamily:{
+        display:["Bricolage Grotesque","sans-serif"],
+        body:["Space Grotesk","sans-serif"],
+        mono:["JetBrains Mono","monospace"]
+      },
+      colors:{
+        cloud:"#F4FBF7", // Updated to a crisp minty light background
+        steel:"#6EE7B7",
+        navy:"#0A1128",  // Deep Navy 
+        midnight:"#050814",
+        accent:"#10B981", // Emerald
+        glow:"#34D399"
+      },
+      animation: {
+        'pulse-slow': 'pulse 6s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+        'float': 'floatY 6s ease-in-out infinite',
+      }
+    }
+  }
+};
+</script>
+
+<style>
+*,*::before,*::after{box-sizing:border-box;font-family:"Space Grotesk",sans-serif;}
+html { scroll-behavior: smooth; }
+body { transition: background-color 0.5s ease; overflow-x: hidden; }
+
+/* Scrollbar */
+::-webkit-scrollbar{width:8px;}
+::-webkit-scrollbar-track{background: transparent;}
+::-webkit-scrollbar-thumb{background:#10B981;border-radius:10px;}
+
+/* Progress Bar - Feature Addition */
+#pbar{position:fixed;top:0;left:0;height:4px;width:0;z-index:9999;background:linear-gradient(90deg,#10B981,#34D399,#0A1128); transition: width 0.1s;}
+
+/* Grid Background */
+.grid-bg{
+    background-image:linear-gradient(rgba(10,17,40,.05) 1px,transparent 1px),linear-gradient(90deg,rgba(10,17,40,.05) 1px,transparent 1px);
+    background-size:80px 80px;
+}
+.dark .grid-bg{
+    background-image:linear-gradient(rgba(52,211,153,.05) 1px,transparent 1px),linear-gradient(90deg,rgba(52,211,153,.05) 1px,transparent 1px);
+}
+
+.text-grad{
+    background:linear-gradient(135deg,#34D399 0%,#10B981 50%,#0A1128 100%);
+    -webkit-background-clip:text;
+    -webkit-text-fill-color:transparent;
+}
+
+.orb{position:absolute;border-radius:50%;filter:blur(100px);pointer-events:none;z-index:0;opacity:0.6;}
+
+/* Typewriter Cursor */
+.tw-text{display:inline-block;width:0;white-space:nowrap;overflow:hidden;border-right:3px solid #10B981;animation:tw 3s steps(12,end) 1.5s forwards,blink .8s step-end infinite;}
+@keyframes tw{to{width:100%;}}
+@keyframes blink{50%{border-color:transparent;}}
+
+/* Card Hover */
+.fcard{transition:transform .4s cubic-bezier(.22,1,.36,1),box-shadow .4s, border-color .3s;}
+.fcard:hover{transform:translateY(-10px);box-shadow:0 30px 60px rgba(16,185,129,0.15);border-color: rgba(16,185,129,0.3);}
+.fcard-bar{position:absolute;bottom:0;left:0;right:0;height:4px;background:linear-gradient(90deg,#10B981,#34D399);width:0;transition:width .5s ease;}
+.fcard:hover .fcard-bar{width:100%;}
+
+/* FAQ Accordion */
+.faq-item{transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);}
+.faq-trigger{cursor:pointer;}
+.faq-content{max-height:0;overflow:hidden;transition:max-height 0.5s cubic-bezier(0,1,0,1), opacity 0.4s; opacity: 0;}
+.faq-item.active .faq-content{max-height:600px; opacity: 1; padding-bottom: 1.5rem;}
+.faq-item.active .faq-icon{transform:rotate(180deg); color:#10B981;}
+
+@keyframes floatY { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-15px); } }
+
+/* Marquee */
+.marquee-wrap{overflow:hidden; white-space: nowrap; position: relative;}
+.marquee-inner{display:flex;width:max-content;animation:marqueeScroll 40s linear infinite;}
+@keyframes marqueeScroll{from{transform:translateX(0);}to{transform:translateX(-50%);}}
+
+/* Modal Panel Transitions */
+#authBox{position:relative;overflow:hidden;border-radius:2rem;width:100%;max-width:950px;height:620px;background:#fff;box-shadow:0 50px 150px rgba(10,17,40,0.5);}
+.dark #authBox{background:#071322;}
+.ac-form{position:absolute;top:0;bottom:0;left:0;width:55%;overflow-y:auto;display:flex;flex-direction:column;justify-content:center;padding:3rem;transition:transform .8s cubic-bezier(.77,0,.175,1),opacity .5s;}
+#panelLogin{z-index:2;transform:translateX(0);opacity:1;}
+#panelSignup{z-index:1;transform:translateX(100%);opacity:0;pointer-events:none;}
+#authBox.active #panelLogin{transform:translateX(-100%);opacity:0;pointer-events:none;}
+#authBox.active #panelSignup{transform:translateX(0);opacity:1;z-index:5;pointer-events:auto;}
+
+#authOverlayPanel{position:absolute;top:0;right:0;bottom:0;width:45%;z-index:200;overflow:hidden;border-radius:0 2rem 2rem 0;}
+#authOverlayInner{width:200%;height:100%;display:flex;background:linear-gradient(145deg,#10B981 0%,#0A1128 100%); transition: transform 0.8s cubic-bezier(.77,0,.175,1);}
+#authBox.active #authOverlayInner { transform: translateX(-50%); }
+.ac-ovp{width:50%;color:#fff;text-align:center;}
+
+.ac-input{width:100%;padding:0.85rem 1.25rem;border-radius:0.85rem;border:2px solid transparent;background:#f1f5f9;color:#0f172a;outline:none;transition:all .3s;}
+.ac-input:focus{border-color:#10B981;background:#fff;box-shadow:0 0 0 4px rgba(16,185,129,0.15);}
+.dark .ac-input{background:#0f1d31;color:#daeeff;}
+
+/* Scroll to Top Feature */
+#scrollTopBtn {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    z-index: 1000;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(20px);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+#scrollTopBtn.visible {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+
+@media(max-width:900px){
+  #authBox{height:auto;background:transparent;box-shadow:none;}
+  .ac-form{position:static;width:100%;display:none;background:#fff;border-radius:2rem;padding:2rem;transform:none!important;opacity:1!important;}
+  .dark .ac-form{background:#071322;}
+  #panelLogin{display:flex;}
+  #authBox.active #panelLogin{display:none;}
+  #authBox.active #panelSignup{display:flex;}
+  #authOverlayPanel{display:none!important;}
+}
+</style>
+</head>
+
+<body class="bg-cloud text-midnight dark:bg-midnight dark:text-cloud overflow-x-hidden transition-colors duration-700">
+<!-- Dynamic Scroll Progress -->
+<div id="pbar"></div>
+
+<!-- Scroll to Top Button Feature -->
+<button id="scrollTopBtn" onclick="scrollToTop()" class="w-12 h-12 bg-emerald-600 hover:bg-emerald-500 text-white rounded-full shadow-lg flex items-center justify-center border-2 border-emerald-400 focus:outline-none">
+    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 15l7-7 7 7"></path></svg>
+</button>
+
+<!-- NAVIGATION -->
+<nav id="navbar" class="fixed top-0 inset-x-0 z-50 bg-cloud/85 dark:bg-midnight/85 backdrop-blur-2xl border-b border-navy/5 dark:border-steel/5 px-8 py-5 transition-all duration-500">
+  <div class="max-w-7xl mx-auto flex items-center justify-between">
+    <a href="index.html" class="flex items-center gap-3 group">
+      <div id="logo-box" class="w-10 h-10 rounded-xl bg-gradient-to-br from-accent to-navy flex items-center justify-center shadow-lg relative overflow-hidden">
+        <span class="font-mono font-bold text-white text-lg relative z-10">⚡</span>
+      </div>
+      <div class="flex flex-col">
+          <span class="font-display font-black text-2xl tracking-tight leading-none text-slate-900 dark:text-white">Eduvora</span>
+          <span class="text-[9px] font-bold tracking-[.25em] uppercase opacity-50">Free Learning Platform</span>
+      </div>
+    </a>
+
+    <div class="hidden lg:flex items-center gap-2">
+      <a href="#courses" class="text-sm font-bold px-4 py-2 rounded-xl hover:bg-navy/5 dark:hover:bg-steel/10 transition-all">Courses</a>
+      <a href="#features" class="text-sm font-bold px-4 py-2 rounded-xl hover:bg-navy/5 dark:hover:bg-steel/10 transition-all">Features</a>
+      <a href="#how-it-works" class="text-sm font-bold px-4 py-2 rounded-xl hover:bg-navy/5 dark:hover:bg-steel/10 transition-all">Workflow</a>
+      <a href="#faq" class="text-sm font-bold px-4 py-2 rounded-xl hover:bg-navy/5 dark:hover:bg-steel/10 transition-all">FAQ</a>
+      <a href="#contact" class="text-sm font-bold px-4 py-2 rounded-xl hover:bg-navy/5 dark:hover:bg-steel/10 transition-all">Contact</a>
+    </div>
+
+    <div class="flex items-center gap-3">
+      <button onclick="toggleTheme()" id="themeBtn" class="w-10 h-10 rounded-xl flex items-center justify-center bg-navy/5 dark:bg-steel/10 text-navy dark:text-steel shadow-sm">◐</button>
+      
+      <div class="hidden sm:flex items-center gap-3" id="nav-actions">
+        <button onclick="openAuth('login')" class="text-sm font-black px-5 py-2.5 rounded-xl border-2 border-navy/10 dark:border-steel/10 hover:border-accent transition-all">Login</button>
+        <button onclick="openAuth('register')" class="text-sm font-black text-white bg-emerald-600 hover:bg-emerald-500 px-6 py-2.5 rounded-xl shadow-md transition-all">Get Started</button>
+      </div>
+
+      <button onclick="toggleMob()" class="lg:hidden w-10 h-10 rounded-xl flex items-center justify-center bg-navy/5 dark:bg-steel/10 text-midnight dark:text-cloud">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
+      </button>
+    </div>
+  </div>
+
+  <div id="mob" class="hidden flex-col gap-3 mt-4 lg:hidden pb-4">
+    <a href="#courses" onclick="closeMob()" class="p-3 font-bold rounded-xl bg-navy/5 dark:bg-steel/5">Courses</a>
+    <a href="#features" onclick="closeMob()" class="p-3 font-bold rounded-xl bg-navy/5 dark:bg-steel/5">Features</a>
+    <a href="#how-it-works" onclick="closeMob()" class="p-3 font-bold rounded-xl bg-navy/5 dark:bg-steel/5">Workflow</a>
+    <a href="#faq" onclick="closeMob()" class="p-3 font-bold rounded-xl bg-navy/5 dark:bg-steel/5">FAQ</a>
+    <div class="grid grid-cols-2 gap-3 mt-2" id="mob-nav-actions">
+        <button onclick="openAuth('login'); closeMob();" class="p-3 rounded-xl border-2 border-navy/10 dark:border-steel/10 font-bold text-center">Login</button>
+        <button onclick="openAuth('register'); closeMob();" class="p-3 rounded-xl bg-emerald-600 text-white font-bold text-center">Register</button>
+    </div>
+  </div>
+</nav>
+
+<!-- HERO SECTION -->
+<section id="hero" class="relative min-h-[calc(100vh-80px)] flex items-center pt-24 pb-12 px-8 grid-bg overflow-hidden">
+  <div class="orb w-[600px] h-[600px] bg-emerald-500/10 -top-20 -right-20 animate-pulse-slow"></div>
+  <div class="orb w-[400px] h-[400px] bg-accent/10 bottom-10 -left-20 animate-pulse-slow" style="animation-delay: 2s"></div>
+  
+  <div class="max-w-7xl mx-auto w-full grid lg:grid-cols-2 gap-12 items-center relative z-10">
+    <div class="space-y-6">
+      <div id="hero-badge" class="inline-flex items-center gap-2 px-4 py-2 rounded-full text-xs font-bold bg-emerald-500/10 border border-emerald-500/20 text-emerald-600 dark:text-emerald-400">
+        <span class="flex h-2 w-2 relative">
+            <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+            <span class="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+        </span>
+        100% Free Computer Science Courses
+      </div>
+      
+      <h1 id="hero-h1" class="font-display font-black text-4xl sm:text-5xl lg:text-6xl leading-[1.08] tracking-tight">
+        Master Tech & <br/>Computer Science. <span class="tw-text text-grad">For Free.</span>
+      </h1>
+      
+      <p id="hero-sub" class="text-base sm:text-lg text-slate-600 dark:text-slate-300 leading-relaxed max-w-xl font-medium">
+        Structured learning paths, comprehensive tutorials, and hands-on developer topics modeled after industry standards.
+      </p>      
+      <div id="hero-ctas" class="flex flex-wrap gap-4 pt-2">
+        <a href="#courses" class="px-8 py-4 bg-emerald-600 hover:bg-emerald-500 text-white font-bold rounded-2xl shadow-lg transition-all hover:scale-105 active:scale-95">
+          Explore Courses &rarr;
+        </a>
+        <button onclick="openAuth('register')" class="px-8 py-4 border-2 border-slate-300 dark:border-slate-700 hover:border-emerald-500 font-bold rounded-2xl transition-all active:scale-95">
+          Create Free Account
+        </button>
+      </div>
+
+      <!-- Quick Stats -->
+      <div id="hero-stats" class="pt-6 border-t border-navy/10 dark:border-steel/10 grid grid-cols-3 gap-6">
+        <div>
+            <p class="font-black text-2xl text-slate-900 dark:text-white">100%</p>
+            <p class="text-[10px] font-bold uppercase tracking-wider opacity-50">Free Access</p>
+        </div>
+        <div>
+            <p class="font-black text-2xl text-slate-900 dark:text-white">Self-Paced</p>
+            <p class="text-[10px] font-bold uppercase tracking-wider opacity-50">Tutorials</p>
+        </div>
+        <div>
+            <p class="font-black text-2xl text-slate-900 dark:text-white">24/7</p>
+            <p class="text-[10px] font-bold uppercase tracking-wider opacity-50">Availability</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Interactive Code Visualizer Window -->
+    <div id="hero-visual" class="relative">
+      <div class="relative bg-[#0d1117] rounded-3xl border border-white/10 overflow-hidden shadow-2xl">
+        <div class="bg-[#161b22] px-6 py-3.5 flex items-center justify-between border-b border-white/5">
+          <div class="flex gap-2">
+            <span class="w-3 h-3 rounded-full bg-red-500"></span>
+            <span class="w-3 h-3 rounded-full bg-yellow-500"></span>
+            <span class="w-3 h-3 rounded-full bg-green-500"></span>
+          </div>
+          <span class="text-xs text-white/50 font-mono">Eduvora_Learning_Path.js</span>
+        </div>
+
+        <div class="p-6 font-mono text-xs sm:text-sm leading-7 text-[#c9d1d9]">
+          <p><span class="text-[#ff7b72]">const</span> <span class="text-[#ffa657]">eduvora</span> = <span class="text-[#ff7b72]">require</span>(<span class="text-[#a5d6ff]">"eduvora-platform"</span>);</p>
+          <p>&nbsp;</p>
+          <p><span class="text-[#ff7b72]">async function</span> <span class="text-[#d2a8ff]">startLearningPath</span>(student) {</p>
+          <p class="pl-4"><span class="text-[#ff7b72]">const</span> courses = <span class="text-[#ff7b72]">await</span> eduvora.getCourses();</p>
+          <p class="pl-4 bg-white/5 py-1 px-3 rounded"><span class="text-[#ff7b72]">if</span> (student.isEnrolled) {</p>
+          <p class="pl-8 text-[#a5d6ff]">return student.accessDashboard();</p>
+          <p class="pl-4">}</p>
+          <p class="pl-4"><span class="text-[#ff7b72]">return</span> eduvora.promptLogin();</p>
+          <p>}</p>
+        </div>
+
+        <div class="bg-[#010409] px-6 py-3 border-t border-white/5 flex items-center justify-between text-xs text-white/60">
+            <span class="text-emerald-400 font-bold">✓ System Online</span>
+            <span>All courses operational</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TECH MARQUEE -->
+<section class="bg-slate-900 py-6 border-y border-white/10 overflow-hidden relative text-white">
+  <div class="marquee-wrap">
+    <div class="marquee-inner flex gap-12 items-center">
+      <div class="flex gap-12 items-center px-6 font-mono font-bold text-sm tracking-widest text-slate-300">
+        <span>DATA STRUCTURES & ALGORITHMS</span> &bull;
+        <span>FULL-STACK WEB DEVELOPMENT</span> &bull;
+        <span>PYTHON & OBJECT ORIENTED PROGRAMMING</span> &bull;
+        <span>SQL & DATABASE ARCHITECTURE</span> &bull;
+        <span>SYSTEM DESIGN & DEVOPS</span> &bull;
+      </div>
+      <div class="flex gap-12 items-center px-6 font-mono font-bold text-sm tracking-widest text-slate-300">
+        <span>DATA STRUCTURES & ALGORITHMS</span> &bull;
+        <span>FULL-STACK WEB DEVELOPMENT</span> &bull;
+        <span>PYTHON & OBJECT ORIENTED PROGRAMMING</span> &bull;
+        <span>SQL & DATABASE ARCHITECTURE</span> &bull;
+        <span>SYSTEM DESIGN & DEVOPS</span> &bull;
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- COURSES SECTION -->
+<section id="courses" class="py-16 px-8 max-w-7xl mx-auto">
+    <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-10 gap-4">
+        <div>
+            <span class="text-xs font-bold uppercase tracking-widest text-emerald-600 dark:text-emerald-400">Course Catalog</span>
+            <h2 class="font-display font-black text-3xl md:text-4xl text-slate-900 dark:text-white mt-1">Available Learning Paths</h2>
+        </div>
+        <p class="text-sm text-slate-500 max-w-sm">Posted directly by platform instructors and admins.</p>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="course-container">
+        <!-- Dynamic content rendered via courses.js -->
+        <div class="animate-pulse bg-white dark:bg-slate-800 p-6 rounded-2xl border border-slate-200 dark:border-slate-700 h-52"></div>
+        <div class="animate-pulse bg-white dark:bg-slate-800 p-6 rounded-2xl border border-slate-200 dark:border-slate-700 h-52"></div>
+        <div class="animate-pulse bg-white dark:bg-slate-800 p-6 rounded-2xl border border-slate-200 dark:border-slate-700 h-52"></div>
+    </div>
+</section>
+
+<!-- PLATFORM FEATURES -->
+<section id="features" class="py-16 px-8 bg-slate-100 dark:bg-slate-900/50 border-y border-slate-200 dark:border-slate-800">
+  <div class="max-w-7xl mx-auto">
+    <div class="text-center max-w-2xl mx-auto mb-12">
+        <span class="text-xs font-bold uppercase tracking-widest text-emerald-600 dark:text-emerald-400">Why Eduvora?</span>
+        <h2 class="font-display font-black text-3xl md:text-4xl text-slate-900 dark:text-white mt-2">Built for Developer Growth</h2>
+    </div>
+
+    <div class="grid md:grid-cols-3 gap-8">
+      <div class="fcard bg-white dark:bg-slate-800 p-8 rounded-3xl border border-slate-200 dark:border-slate-700 relative overflow-hidden">
+        <div class="w-12 h-12 rounded-xl bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 flex items-center justify-center font-bold text-xl mb-6">📚</div>
+        <h3 class="font-display font-bold text-xl mb-3 text-slate-900 dark:text-white">Structured Topics</h3>
+        <p class="text-sm text-slate-500 dark:text-slate-400 leading-relaxed">Carefully organized modules ranging from fundamental concepts to advanced CS topics.</p>
+        <div class="fcard-bar"></div>
+      </div>
+
+      <div class="fcard bg-white dark:bg-slate-800 p-8 rounded-3xl border border-slate-200 dark:border-slate-700 relative overflow-hidden">
+        <div class="w-12 h-12 rounded-xl bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 flex items-center justify-center font-bold text-xl mb-6">⚡</div>
+        <h3 class="font-display font-bold text-xl mb-3 text-slate-900 dark:text-white">Instant Access</h3>
+        <p class="text-sm text-slate-500 dark:text-slate-400 leading-relaxed">No paywalls or hidden fees. Log in and immediately access your personalized dashboard.</p>
+        <div class="fcard-bar"></div>
+      </div>
+
+      <div class="fcard bg-white dark:bg-slate-800 p-8 rounded-3xl border border-slate-200 dark:border-slate-700 relative overflow-hidden">
+        <div class="w-12 h-12 rounded-xl bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 flex items-center justify-center font-bold text-xl mb-6">🎯</div>
+        <h3 class="font-display font-bold text-xl mb-3 text-slate-900 dark:text-white">Admin-Curated</h3>
+        <p class="text-sm text-slate-500 dark:text-slate-400 leading-relaxed">Courses are added and updated regularly by teachers and technical administrators.</p>
+        <div class="fcard-bar"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- WORKFLOW SECTION -->
+<section id="how-it-works" class="py-16 px-8 max-w-7xl mx-auto">
+    <div class="grid lg:grid-cols-2 gap-12 items-center">
+        <div>
+            <span class="text-xs font-bold uppercase tracking-widest text-emerald-600 dark:text-emerald-400">Learning Workflow</span>
+            <h2 class="font-display font-black text-3xl md:text-4xl text-slate-900 dark:text-white mt-2 mb-6">How Eduvora Works</h2>
+            
+            <div class="space-y-8">
+                <div class="flex gap-6">
+                    <div class="w-12 h-12 rounded-2xl bg-emerald-600 text-white font-bold flex items-center justify-center shrink-0">1</div>
+                    <div>
+                        <h4 class="font-bold text-lg text-slate-900 dark:text-white">Explore Catalog</h4>
+                        <p class="text-sm text-slate-500 mt-1">Browse active courses published on the main landing page.</p>
+                    </div>
+                </div>
+                <div class="flex gap-6">
+                    <div class="w-12 h-12 rounded-2xl bg-emerald-600 text-white font-bold flex items-center justify-center shrink-0">2</div>
+                    <div>
+                        <h4 class="font-bold text-lg text-slate-900 dark:text-white">Sign Up / Log In</h4>
+                        <p class="text-sm text-slate-500 mt-1">Click "View Course" to seamlessly authenticate your free student account.</p>
+                    </div>
+                </div>
+                <div class="flex gap-6">
+                    <div class="w-12 h-12 rounded-2xl bg-emerald-600 text-white font-bold flex items-center justify-center shrink-0">3</div>
+                    <div>
+                        <h4 class="font-bold text-lg text-slate-900 dark:text-white">Access Dashboard</h4>
+                        <p class="text-sm text-slate-500 mt-1">Jump directly into your personal student dashboard and start learning.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="bg-slate-900 rounded-3xl p-8 text-white border border-slate-800 shadow-xl">
+            <h3 class="font-display font-bold text-2xl mb-4">Ready to start learning?</h3>
+            <p class="text-slate-400 text-sm mb-6">Create your free account today and unlock complete access to all Eduvora modules.</p>
+            <button onclick="openAuth('register')" class="w-full py-4 bg-emerald-600 hover:bg-emerald-500 text-white font-bold rounded-xl transition">
+                Create Account Now
+            </button>
+        </div>
+    </div>
+</section>
+
+<!-- FAQ SECTION -->
+<section id="faq" class="py-16 px-8 bg-slate-100 dark:bg-slate-900/50">
+    <div class="max-w-4xl mx-auto">
+        <div class="text-center mb-12">
+            <span class="text-xs font-bold uppercase tracking-widest text-emerald-600 dark:text-emerald-400">Help & Support</span>
+            <h2 class="font-display font-black text-3xl md:text-4xl text-slate-900 dark:text-white mt-2">Frequently Asked Questions</h2>
+        </div>
+
+        <div class="space-y-4">
+            <div class="faq-item bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 px-6">
+                <div class="faq-trigger flex justify-between items-center py-5" onclick="toggleFaq(this)">
+                    <h3 class="font-bold text-slate-900 dark:text-white">Is Eduvora completely free to use?</h3>
+                    <span class="faq-icon text-xl font-bold">&darr;</span>
+                </div>
+                <div class="faq-content text-sm text-slate-500 dark:text-slate-400">
+                    Yes! Eduvora provides free tutorials and course materials for students and software developers.
+                </div>
+            </div>
+
+            <div class="faq-item bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 px-6">
+                <div class="faq-trigger flex justify-between items-center py-5" onclick="toggleFaq(this)">
+                    <h3 class="font-bold text-slate-900 dark:text-white">Do I need an account to view courses?</h3>
+                    <span class="faq-icon text-xl font-bold">&darr;</span>
+                </div>
+                <div class="faq-content text-sm text-slate-500 dark:text-slate-400">
+                    You can explore available courses on the homepage. Clicking "View Course" will prompt you to log in or register so your learning progress is tracked.
+                </div>
+            </div>
+
+            <div class="faq-item bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 px-6">
+                <div class="faq-trigger flex justify-between items-center py-5" onclick="toggleFaq(this)">
+                    <h3 class="font-bold text-slate-900 dark:text-white">How do admins post new courses?</h3>
+                    <span class="faq-icon text-xl font-bold">&darr;</span>
+                </div>
+                <div class="faq-content text-sm text-slate-500 dark:text-slate-400">
+                    Users with the "admin" role have access to an admin dashboard where they can create, manage, and publish new courses.
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- CONTACT SECTION -->
+<section id="contact" class="py-16 px-8 max-w-7xl mx-auto">
+    <div class="bg-slate-900 rounded-3xl p-8 sm:p-12 text-white flex flex-col md:flex-row justify-between items-center gap-8">
+        <div>
+            <h2 class="font-display font-black text-3xl mb-2">Have questions or feedback?</h2>
+            <p class="text-slate-400 text-sm max-w-md">Reach out to the Eduvora academic team for support or suggestions.</p>
+        </div>
+        <a href="mailto:support@eduvora.com" class="px-8 py-4 bg-emerald-600 hover:bg-emerald-500 font-bold rounded-2xl text-white transition shrink-0">
+            Contact Support
+        </a>
+    </div>
+</section>
+
+<!-- AUTH MODAL SYSTEM -->
+<div id="authModal" class="fixed inset-0 z-[2000] hidden opacity-0 transition-opacity duration-300">
+  <div class="absolute inset-0 bg-slate-950/80 backdrop-blur-md" onclick="closeAuthModal()"></div>
+  <div class="absolute inset-0 flex items-center justify-center p-4 pointer-events-none">
+    <div class="pointer-events-auto relative w-full max-w-[950px]" id="modalContainer">
+      <button onclick="closeAuthModal()" class="absolute -top-4 -right-4 z-[300] w-10 h-10 rounded-full bg-white dark:bg-slate-800 text-slate-900 dark:text-white shadow-xl flex items-center justify-center font-bold text-lg hover:bg-rose-500 hover:text-white transition-all">&times;</button>
+      
+      <div id="authBox">
+        <!-- LOGIN PANEL -->
+        <div id="panelLogin" class="ac-form">
+          <div class="mb-6">
+            <h2 class="font-display font-black text-3xl text-slate-900 dark:text-white">Welcome Back</h2>
+            <p class="text-xs text-slate-500 mt-1">Sign in to access your Eduvora account</p>
+          </div>
+
+          <div id="modal-login-error" class="hidden mb-4 p-3 bg-rose-50 border border-rose-200 text-rose-700 text-xs rounded-lg font-medium"></div>
+
+          <form id="modal-login-form" class="space-y-4">
+            <div>
+                <label class="text-xs font-bold text-slate-700 dark:text-slate-300 mb-1 block">Email Address</label>
+                <input type="email" id="modal-login-email" required class="ac-input" placeholder="you@example.com"/>
+            </div>
+            <div>
+                <label class="text-xs font-bold text-slate-700 dark:text-slate-300 mb-1 block">Password</label>
+                <input type="password" id="modal-login-password" required class="ac-input" placeholder="••••••••"/>
+            </div>
+            <button type="submit" class="w-full py-3 bg-emerald-600 hover:bg-emerald-500 text-white font-bold rounded-xl text-sm transition">
+                Sign In &rarr;
+            </button>
+            <p class="text-center text-xs text-slate-500 mt-4">New student? <button type="button" onclick="acGoSignup()" class="text-emerald-600 font-bold hover:underline">Create Account</button></p>
+          </form>
+        </div>
+
+        <!-- SIGNUP PANEL -->
+        <div id="panelSignup" class="ac-form">
+          <div class="mb-6">
+            <h2 class="font-display font-black text-3xl text-slate-900 dark:text-white">Join Eduvora</h2>
+            <p class="text-xs text-slate-500 mt-1">Start learning computer science today</p>
+          </div>
+
+          <div id="modal-register-error" class="hidden mb-4 p-3 bg-rose-50 border border-rose-200 text-rose-700 text-xs rounded-lg font-medium"></div>
+
+          <form id="modal-register-form" class="space-y-4">
+            <div>
+                <label class="text-xs font-bold text-slate-700 dark:text-slate-300 mb-1 block">Full Name</label>
+                <input type="text" id="modal-reg-name" required class="ac-input" placeholder="Your Full Name"/>
+            </div>
+            <div>
+                <label class="text-xs font-bold text-slate-700 dark:text-slate-300 mb-1 block">Email Address</label>
+                <input type="email" id="modal-reg-email" required class="ac-input" placeholder="you@example.com"/>
+            </div>
+            <div>
+                <label class="text-xs font-bold text-slate-700 dark:text-slate-300 mb-1 block">Password</label>
+                <input type="password" id="modal-reg-password" required class="ac-input" placeholder="••••••••"/>
+            </div>
+            <button type="submit" class="w-full py-3 bg-emerald-600 hover:bg-emerald-500 text-white font-bold rounded-xl text-sm transition">
+                Complete Registration
+            </button>
+            <p class="text-center text-xs text-slate-500 mt-4">Already registered? <button type="button" onclick="acGoLogin()" class="text-emerald-600 font-bold hover:underline">Sign In</button></p>
+          </form>
+        </div>
+
+        <!-- OVERLAY PANEL -->
+        <div id="authOverlayPanel">
+          <div id="authOverlayInner">
+            <div class="ac-ovp flex flex-col items-center justify-center p-10">
+              <span class="text-4xl mb-4">⚡</span>
+              <h2 class="font-display font-black text-3xl mb-4">Start Your Path</h2>
+              <p class="text-white/80 text-xs mb-8 max-w-xs">Access free tutorials and track your progress seamlessly.</p>
+              <button onclick="acGoSignup()" class="px-8 py-3 border-2 border-white/40 hover:bg-white hover:text-slate-900 font-bold rounded-xl text-xs transition">Create Account</button>
+            </div>
+            <div class="ac-ovp flex flex-col items-center justify-center p-10">
+              <span class="text-4xl mb-4">👋</span>
+              <h2 class="font-display font-black text-3xl mb-4">Welcome Back</h2>
+              <p class="text-white/80 text-xs mb-8 max-w-xs">Log in to resume learning from your dashboard.</p>
+              <button onclick="acGoLogin()" class="px-8 py-3 border-2 border-white/40 hover:bg-white hover:text-slate-900 font-bold rounded-xl text-xs transition">Sign In</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<footer class="py-10 px-8 bg-slate-950 text-slate-400 text-sm border-t border-slate-800">
+    <div class="max-w-7xl mx-auto flex justify-between items-center">
+        <span>⚡ Eduvora &copy; 2026. All rights reserved.</span>
+    </div>
+</footer>
+
+<!-- External Scripts from client/js/ -->
+<script src="js/courses.js"></script>
+<script src="js/auth.js"></script>
+
+<script>
+/* Theme & Accordion Logic */
+let dark = localStorage.theme === "dark" || (!("theme" in localStorage) && window.matchMedia("(prefers-color-scheme: dark)").matches);
+function applyTheme() {
+    document.documentElement.classList.toggle("dark", dark);
+    localStorage.theme = dark ? "dark" : "light";
+    document.getElementById("themeBtn").textContent = dark ? "◑" : "◐";
+}
+applyTheme();
+function toggleTheme() { dark = !dark; applyTheme(); }
+
+function toggleMob() { 
+    const mob = document.getElementById("mob");
+    mob.classList.toggle("hidden"); 
+    mob.classList.toggle("flex"); 
+}
+function closeMob() { 
+    document.getElementById("mob").classList.add("hidden"); 
+    document.getElementById("mob").classList.remove("flex"); 
+}
+
+function toggleFaq(el) {
+  const item = el.parentElement;
+  const isActive = item.classList.contains("active");
+  document.querySelectorAll(".faq-item").forEach(i => i.classList.remove("active"));
+  if(!isActive) item.classList.add("active");
+}
+
+/* Feature Addition: Scroll Progress Bar Setup */
+window.onscroll = function() {
+  // Update Progress Bar
+  let winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+  let height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+  let scrolled = (winScroll / height) * 100;
+  document.getElementById("pbar").style.width = scrolled + "%";
+
+  // Toggle Scroll-to-Top Button Visibility
+  let scrollBtn = document.getElementById("scrollTopBtn");
+  if (winScroll > 300) {
+      scrollBtn.classList.add("visible");
+  } else {
+      scrollBtn.classList.remove("visible");
+  }
+};
+
+/* Feature Addition: Scroll to Top Function */
+function scrollToTop() {
+    window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+    });
+}
+
+const authModal = document.getElementById("authModal");
+const authBoxContainer = document.getElementById("authBox");
+
+window.openAuth = (mode) => {
+    authModal.classList.remove("hidden");
+    document.body.style.overflow = "hidden";
+    setTimeout(() => authModal.classList.remove("opacity-0"), 20);
+    if(mode === 'register') authBoxContainer.classList.add("active");
+    else authBoxContainer.classList.remove("active");
+}
+
+function closeAuthModal() {
+    authModal.classList.add("opacity-0");
+    setTimeout(() => {
+        authModal.classList.add("hidden");
+        document.body.style.overflow = "auto";
+    }, 300);
+}
+
+function acGoSignup() { authBoxContainer.classList.add("active"); }
+function acGoLogin() { authBoxContainer.classList.remove("active"); }
+</script>
+</body>
+</html>

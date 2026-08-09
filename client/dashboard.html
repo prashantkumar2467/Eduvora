@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Dashboard - Eduvora</title>
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: { sans: ['"Plus Jakarta Sans"', 'sans-serif'] },
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-slate-50 text-slate-800 dark:bg-slate-900 dark:text-slate-100 font-sans antialiased flex h-screen overflow-hidden transition-colors duration-300">
+
+    <!-- Sidebar -->
+    <aside class="w-64 bg-slate-900 border-r border-slate-800 text-slate-300 hidden md:flex flex-col justify-between transition-all duration-300 shrink-0">
+        <div>
+            <!-- Logo -->
+            <div class="h-16 flex items-center px-6 border-b border-slate-800">
+                <a href="dashboard.html" class="text-2xl font-extrabold tracking-tight text-white flex items-center gap-2">
+                    <span class="text-sky-500">⚡</span> Eduvora
+                </a>
+            </div>
+            
+            <!-- Side Navigation -->
+            <nav class="p-4 space-y-1">
+                <a href="dashboard.html" class="flex items-center gap-3 px-3 py-2.5 bg-sky-600 text-white rounded-xl font-medium transition-colors">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"></path></svg>
+                    Dashboard
+                </a>
+
+                <a href="profile.html" class="flex items-center gap-3 px-3 py-2.5 text-slate-400 hover:text-white hover:bg-slate-800 rounded-xl font-medium transition-colors">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path></svg>
+                    My Profile
+                </a>
+
+                <a href="assignments.html" class="flex items-center gap-3 px-3 py-2.5 text-slate-400 hover:text-white hover:bg-slate-800 rounded-xl font-medium transition-colors">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path></svg>
+                    Assignments
+                </a>
+
+                <a href="settings.html" class="flex items-center gap-3 px-3 py-2.5 text-slate-400 hover:text-white hover:bg-slate-800 rounded-xl font-medium transition-colors">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path></svg>
+                    Settings
+                </a>
+            </nav>
+        </div>
+
+        <!-- Logout Bottom -->
+        <div class="p-4 border-t border-slate-800">
+            <button id="logout-btn" class="w-full flex items-center justify-center gap-2 px-4 py-2.5 text-sm font-semibold text-slate-300 hover:text-white hover:bg-rose-600 rounded-xl transition-all">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path></svg>
+                Sign Out
+            </button>
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <div class="flex-1 flex flex-col h-screen overflow-hidden">
+        <!-- Header -->
+        <header class="h-16 bg-white dark:bg-slate-950 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between px-4 sm:px-6 lg:px-8 z-10 shrink-0 transition-colors">
+            <div class="flex items-center gap-4">
+                <div class="relative hidden sm:block">
+                    <svg class="w-4 h-4 absolute left-3 top-1/2 transform -translate-y-1/2 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+                    <input type="text" id="course-search-input" onkeyup="filterCourses()" placeholder="Search active courses..." class="pl-10 pr-4 py-2 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-full text-sm text-slate-800 dark:text-slate-200 focus:outline-none focus:ring-2 focus:ring-sky-500 w-64 transition-all">
+                </div>
+            </div>
+
+            <div class="flex items-center gap-4">
+                <button id="themeToggleBtn" onclick="toggleTheme()" class="px-3 py-1.5 text-xs font-bold rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-200 hover:border-sky-500 transition flex items-center gap-1.5">
+                    <span id="themeToggleIcon">🌙</span> <span id="themeToggleText" class="hidden sm:inline">Dark</span>
+                </button>
+
+                <a href="profile.html" class="flex items-center gap-3 pl-4 border-l border-slate-200 dark:border-slate-800 group">
+                    <div class="flex flex-col items-end hidden sm:flex">
+                        <span id="user-greeting" class="text-sm font-bold text-slate-800 dark:text-slate-100 group-hover:text-sky-600 transition">Loading...</span>
+                        <span class="text-xs font-medium text-slate-500 dark:text-slate-400">Student Account</span>
+                    </div>
+                    <div id="user-avatar-initials" class="w-10 h-10 rounded-full bg-gradient-to-tr from-sky-500 to-indigo-500 flex items-center justify-center text-white font-bold shadow-md border-2 border-white dark:border-slate-800 group-hover:scale-105 transition">
+                        U
+                    </div>
+                </a>
+            </div>
+        </header>
+
+        <!-- Main Body -->
+        <main class="flex-1 overflow-y-auto bg-slate-50 dark:bg-slate-900 p-4 sm:p-6 lg:p-8 transition-colors">
+            <div class="max-w-6xl mx-auto space-y-8">
+                
+                <!-- Welcome Banner -->
+                <div class="bg-slate-900 dark:bg-slate-950 rounded-3xl p-8 sm:p-10 shadow-xl border border-slate-800 relative overflow-hidden">
+                    <div class="relative z-10">
+                        <h1 class="text-3xl sm:text-4xl font-extrabold text-white mb-3" id="welcome-header">Welcome back! 👋</h1>
+                        <p class="text-slate-400 text-sm md:text-base max-w-xl leading-relaxed">Continue your computer science learning path today. Select a course below to jump directly into lessons.</p>
+                    </div>
+                </div>
+
+                <!-- Stats Grid -->
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div class="bg-white dark:bg-slate-800 p-6 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm flex items-center gap-4">
+                        <div class="w-12 h-12 rounded-xl bg-sky-50 dark:bg-sky-950 text-sky-600 flex items-center justify-center text-xl font-bold">📚</div>
+                        <div>
+                            <p class="text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wide">Available Courses</p>
+                            <h3 class="text-2xl font-black text-slate-800 dark:text-white" id="stat-courses-count">0</h3>
+                        </div>
+                    </div>
+                    <div class="bg-white dark:bg-slate-800 p-6 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm flex items-center gap-4">
+                        <div class="w-12 h-12 rounded-xl bg-emerald-50 dark:bg-emerald-950 text-emerald-600 flex items-center justify-center text-xl font-bold">🔥</div>
+                        <div>
+                            <p class="text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wide">Learning Streak</p>
+                            <h3 class="text-2xl font-black text-slate-800 dark:text-white">12 Days</h3>
+                        </div>
+                    </div>
+                    <div class="bg-white dark:bg-slate-800 p-6 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm flex items-center gap-4">
+                        <div class="w-12 h-12 rounded-xl bg-purple-50 dark:bg-purple-950 text-purple-600 flex items-center justify-center text-xl font-bold">🏆</div>
+                        <div>
+                            <p class="text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wide">Status</p>
+                            <h3 class="text-2xl font-black text-slate-800 dark:text-white">Active Student</h3>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Active Courses Section -->
+                <div>
+                    <div class="flex items-center justify-between mb-6">
+                        <div>
+                            <h2 class="text-2xl font-extrabold text-slate-900 dark:text-white">Active Enrolled Courses</h2>
+                            <p class="text-slate-500 dark:text-slate-400 text-sm mt-1">Select any course to view topics and modules.</p>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="dashboard-courses">
+                        <div class="animate-pulse bg-white dark:bg-slate-800 p-6 rounded-2xl border border-slate-200 dark:border-slate-700 h-48"></div>
+                        <div class="animate-pulse bg-white dark:bg-slate-800 p-6 rounded-2xl border border-slate-200 dark:border-slate-700 h-48"></div>
+                    </div>
+                </div>
+
+            </div>
+        </main>
+    </div>
+
+    <script src="js/dashboard.js"></script>
+</body>
+</html>
