@@ -21,12 +21,6 @@
                         display: ['"Bricolage Grotesque"', 'sans-serif'],
                         body: ['"Space Grotesk"', 'sans-serif'],
                         mono: ['"JetBrains Mono"', 'monospace']
-                    },
-                    colors: {
-                        navy: '#0F172A',
-                        midnight: '#070F1E',
-                        accent: '#0284C7',
-                        glow: '#38BDF8'
                     }
                 }
             }
@@ -37,18 +31,18 @@
         .font-mono-code { font-family: 'JetBrains Mono', monospace; }
         ::-webkit-scrollbar { width: 6px; height: 6px; }
         ::-webkit-scrollbar-track { background: transparent; }
-        ::-webkit-scrollbar-thumb { background: #0284C7; border-radius: 8px; }
+        ::-webkit-scrollbar-thumb { background: #10B981; border-radius: 8px; }
         
         .topic-link.active {
-            background-color: rgba(2, 132, 199, 0.15);
-            color: #0284C7;
-            border-left: 4px solid #0284C7;
+            background-color: rgba(16, 185, 129, 0.15);
+            color: #10B981;
+            border-left: 4px solid #10B981;
             font-weight: 700;
         }
         .dark .topic-link.active {
-            background-color: rgba(56, 189, 248, 0.15);
-            color: #38BDF8;
-            border-left: 4px solid #38BDF8;
+            background-color: rgba(52, 211, 153, 0.15);
+            color: #34D399;
+            border-left: 4px solid #34D399;
         }
     </style>
 </head>
@@ -57,62 +51,73 @@
     <!-- NAVBAR -->
     <nav class="sticky top-0 z-50 bg-white/90 dark:bg-slate-950/90 backdrop-blur-md border-b border-slate-200 dark:border-slate-800 px-4 sm:px-8 py-3.5 flex items-center justify-between transition-colors">
         <div class="flex items-center gap-4 sm:gap-6">
-            <!-- Dynamic Logo Link (Points to dashboard if logged in, index if guest) -->
-            <a id="logo-link" href="index.html" class="flex items-center gap-2 group">
-                <div class="w-9 h-9 rounded-xl bg-gradient-to-br from-sky-500 to-indigo-600 flex items-center justify-center font-bold text-white shadow-md">
+            <a id="logo-link" href="index.html" class="flex items-center gap-2.5 group">
+                <div class="w-9 h-9 rounded-xl bg-gradient-to-br from-emerald-500 to-slate-900 flex items-center justify-center font-bold text-white shadow-md">
                     ⚡
                 </div>
-                <span class="font-display font-extrabold text-xl tracking-tight text-slate-900 dark:text-white group-hover:text-sky-600 dark:group-hover:text-sky-400 transition">Eduvora</span>
+                <span class="font-display font-extrabold text-xl tracking-tight text-slate-900 dark:text-white group-hover:text-emerald-500 transition">Eduvora</span>
             </a>
             
-            <!-- Dynamic Back Link -->
-            <a id="back-nav-link" href="dashboard.html" class="hidden sm:inline-flex items-center gap-1.5 text-xs font-bold text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white px-3 py-1.5 rounded-lg bg-slate-100 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 transition">
+            <a id="back-nav-link" href="dashboard.html" class="hidden sm:inline-flex items-center gap-1.5 text-xs font-bold text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white px-3 py-1.5 rounded-xl bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 transition">
                 &larr; Back to Dashboard
             </a>
         </div>
 
         <div class="flex items-center gap-3">
-            <!-- Theme Switcher -->
-            <button id="themeToggleBtn" onclick="toggleTheme()" class="px-3 py-1.5 text-xs font-bold rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-200 hover:border-sky-500 transition flex items-center gap-1.5">
+            <button id="themeToggleBtn" onclick="toggleTheme()" class="px-3 py-1.5 text-xs font-bold rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-200 hover:border-emerald-500 transition flex items-center gap-1.5">
                 <span id="themeToggleIcon">🌙</span> <span id="themeToggleText">Dark</span>
             </button>
 
-            <div class="flex items-center gap-3" id="nav-auth-slot">
-                <!-- Dynamically populated via JS -->
-            </div>
+            <div class="flex items-center gap-3" id="nav-auth-slot"></div>
         </div>
     </nav>
 
-    <!-- MAIN COURSE HEADER -->
-    <header class="bg-slate-100 dark:bg-gradient-to-b dark:from-slate-950 dark:to-slate-900 border-b border-slate-200 dark:border-slate-800 px-4 sm:px-8 py-8 transition-colors">
-        <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
-            <div class="space-y-3 max-w-4xl">
-                <div class="flex flex-wrap items-center gap-2.5">
-                    <span id="course-category-badge" class="px-3 py-1 text-xs font-bold uppercase tracking-wider bg-sky-500/10 border border-sky-500/20 text-sky-600 dark:text-sky-400 rounded-full">
-                        Category
-                    </span>
-                    <span class="px-3 py-1 text-xs font-bold bg-emerald-500/10 border border-emerald-500/20 text-emerald-600 dark:text-emerald-400 rounded-full flex items-center gap-1">
-                        <span class="w-2 h-2 rounded-full bg-emerald-500 dark:bg-emerald-400"></span> Public Access
-                    </span>
-                    <span class="text-xs text-slate-500 dark:text-slate-400 font-mono" id="course-id-label">ID: #--</span>
+    <!-- ELEVATED HERO COURSE HEADER -->
+    <header class="relative bg-gradient-to-br from-slate-900 via-slate-950 to-slate-900 border-b border-slate-800 text-white px-4 sm:px-8 py-10 transition-colors overflow-hidden">
+        <div class="absolute -top-24 -right-24 w-96 h-96 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none"></div>
+        <div class="absolute -bottom-24 -left-24 w-80 h-80 bg-sky-500/10 rounded-full blur-3xl pointer-events-none"></div>
+
+        <div class="max-w-7xl mx-auto relative z-10">
+            <div class="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-8">
+                
+                <div class="space-y-4 max-w-3xl">
+                    <!-- Badges -->
+                    <div class="flex flex-wrap items-center gap-3">
+                        <span id="course-category-badge" class="px-3.5 py-1 text-xs font-bold uppercase tracking-wider bg-emerald-500/20 border border-emerald-500/30 text-emerald-400 rounded-full">
+                            Category
+                        </span>
+                        <span class="px-3.5 py-1 text-xs font-bold bg-sky-500/20 border border-sky-500/30 text-sky-300 rounded-full flex items-center gap-1.5">
+                            <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span> Public Access
+                        </span>
+                        <span class="text-xs text-slate-400 font-mono" id="course-id-label">ID: #--</span>
+                    </div>
+
+                    <!-- Title & Description -->
+                    <h1 id="course-main-title" class="font-display font-black text-3xl sm:text-5xl tracking-tight leading-tight text-white">
+                        Loading Course...
+                    </h1>
+
+                    <p id="course-main-desc" class="text-sm sm:text-base text-slate-300 leading-relaxed font-medium">
+                        Fetching course syllabus...
+                    </p>
                 </div>
 
-                <h1 id="course-main-title" class="font-display font-black text-2xl sm:text-4xl text-slate-900 dark:text-white tracking-tight leading-tight">
-                    Loading Course...
-                </h1>
-
-                <p id="course-main-desc" class="text-sm sm:text-base text-slate-600 dark:text-slate-300 leading-relaxed">
-                    Fetching course curriculum...
-                </p>
-
-                <div class="flex flex-wrap items-center gap-6 text-xs text-slate-500 dark:text-slate-400 pt-2 font-mono">
-                    <div class="flex items-center gap-1.5">
-                        <span class="text-sky-600 dark:text-sky-400 font-bold">👤 Instructor:</span> <span id="course-instructor">Eduvora Faculty</span>
+                <!-- Course Meta Cards -->
+                <div class="grid grid-cols-2 sm:grid-cols-2 gap-4 w-full lg:w-auto shrink-0 bg-white/5 border border-white/10 p-4 rounded-3xl backdrop-blur-md">
+                    <div class="p-3 bg-slate-900/60 rounded-2xl border border-white/5">
+                        <span class="text-[10px] font-bold text-slate-400 uppercase tracking-wider block mb-1">Instructor</span>
+                        <span class="text-xs font-bold text-emerald-400 flex items-center gap-1.5" id="course-instructor">
+                            <span>👤</span> Eduvora Faculty
+                        </span>
                     </div>
-                    <div class="flex items-center gap-1.5">
-                        <span class="text-sky-600 dark:text-sky-400 font-bold">📖 Topics Published:</span> <span id="topic-count-label">0 Lessons</span>
+                    <div class="p-3 bg-slate-900/60 rounded-2xl border border-white/5">
+                        <span class="text-[10px] font-bold text-slate-400 uppercase tracking-wider block mb-1">Published Lessons</span>
+                        <span class="text-xs font-bold text-white flex items-center gap-1.5" id="topic-count-label">
+                            <span>📖</span> 0 Lessons
+                        </span>
                     </div>
                 </div>
+
             </div>
         </div>
     </header>
@@ -120,8 +125,8 @@
     <!-- SYLLABUS & TOPIC READER WORKSPACE -->
     <div class="flex-1 max-w-7xl w-full mx-auto grid grid-cols-1 lg:grid-cols-12 gap-0 border-x border-slate-200 dark:border-slate-800">
         
-        <!-- LEFT SIDEBAR: TOPIC NAVIGATION MENU -->
-        <aside class="lg:col-span-4 bg-slate-100 dark:bg-slate-950 border-r border-b lg:border-b-0 border-slate-200 dark:border-slate-800 flex flex-col h-[450px] lg:h-[calc(100vh-220px)] sticky top-[60px] transition-colors">
+        <!-- LEFT SIDEBAR: TOPIC NAVIGATION -->
+        <aside class="lg:col-span-4 bg-slate-100 dark:bg-slate-950 border-r border-b lg:border-b-0 border-slate-200 dark:border-slate-800 flex flex-col h-[450px] lg:h-[calc(100vh-250px)] sticky top-[60px] transition-colors">
             <div class="p-4 border-b border-slate-200 dark:border-slate-800 bg-slate-200/50 dark:bg-slate-900/50 flex items-center justify-between">
                 <div>
                     <h3 class="font-display font-bold text-sm text-slate-900 dark:text-white uppercase tracking-wider">Course Syllabus</h3>
@@ -129,23 +134,21 @@
                 </div>
             </div>
 
-            <!-- Topic Search Filter -->
+            <!-- Filter Input -->
             <div class="p-3 border-b border-slate-200 dark:border-slate-800 bg-slate-100 dark:bg-slate-950">
-                <input type="text" id="topic-search-input" onkeyup="filterTopics()" placeholder="Search syllabus topics..." class="w-full px-3 py-2 bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-800 rounded-lg text-xs text-slate-800 dark:text-slate-200 outline-none focus:border-sky-500 transition font-mono">
+                <input type="text" id="topic-search-input" onkeyup="filterTopics()" placeholder="Search syllabus topics..." class="w-full px-3 py-2 bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-800 rounded-xl text-xs text-slate-800 dark:text-slate-200 outline-none focus:border-emerald-500 transition font-mono">
             </div>
 
-            <!-- Published Topics List -->
             <div id="syllabus-sidebar-list" class="flex-1 overflow-y-auto p-2 space-y-2">
                 <div class="p-4 text-center text-xs text-slate-400 font-mono">Loading modules...</div>
             </div>
         </aside>
 
-        <!-- RIGHT PANEL: TOPIC CONTENT WORKSPACE -->
+        <!-- RIGHT PANEL: CONTENT -->
         <main class="lg:col-span-8 bg-white dark:bg-slate-900 p-6 sm:p-10 flex flex-col justify-between overflow-y-auto transition-colors">
             <div class="space-y-6">
-                <!-- Topic Breadcrumb & Header -->
                 <div>
-                    <div class="flex items-center gap-2 text-xs font-mono text-sky-600 dark:text-sky-400 mb-2">
+                    <div class="flex items-center gap-2 text-xs font-mono text-emerald-600 dark:text-emerald-400 mb-2">
                         <span id="reading-module-title">MODULE</span> &bull; <span id="reading-topic-number">TOPIC</span>
                     </div>
                     <h2 id="reading-topic-heading" class="font-display font-extrabold text-2xl sm:text-3xl text-slate-900 dark:text-white tracking-tight">
@@ -155,31 +158,28 @@
 
                 <hr class="border-slate-200 dark:border-slate-800">
 
-                <!-- Topic Content Body -->
                 <div id="reading-topic-body" class="text-slate-700 dark:text-slate-300 text-sm sm:text-base leading-relaxed space-y-4">
-                    <p class="text-slate-500">Choose any lesson from the syllabus menu on the left to read its contents.</p>
+                    <p class="text-slate-500">Choose any lesson from the menu on the left to read its contents.</p>
                 </div>
 
-                <!-- CODE DISPLAY CARD -->
                 <div id="code-snippet-container" class="hidden bg-[#0b1324] border border-slate-800 rounded-2xl overflow-hidden shadow-xl">
                     <div class="bg-[#111c35] px-4 py-2.5 border-b border-slate-800 flex items-center justify-between">
                         <div class="flex items-center gap-2">
                             <span class="w-2.5 h-2.5 rounded-full bg-rose-500"></span>
                             <span class="w-2.5 h-2.5 rounded-full bg-amber-500"></span>
                             <span class="w-2.5 h-2.5 rounded-full bg-emerald-500"></span>
-                            <span class="text-xs font-mono text-slate-400">Code Reference</span>
+                            <span class="text-xs font-mono text-slate-400">Code Snippet Reference</span>
                         </div>
                         <button onclick="copyCodeSnippet()" class="text-[11px] font-mono text-slate-400 hover:text-white bg-slate-800 px-2.5 py-1 rounded border border-slate-700 transition">
                             Copy Code
                         </button>
                     </div>
-                    <div class="p-5 font-mono-code text-xs sm:text-sm text-sky-300 overflow-x-auto bg-[#070d19]">
+                    <div class="p-5 font-mono-code text-xs sm:text-sm text-emerald-300 overflow-x-auto bg-[#070d19]">
                         <pre id="code-snippet-box"><code></code></pre>
                     </div>
                 </div>
             </div>
 
-            <!-- Topic Navigation Controls -->
             <div class="pt-8 mt-8 border-t border-slate-200 dark:border-slate-800 flex items-center justify-between gap-4">
                 <button id="prev-topic-btn" onclick="navigateTopic(-1)" class="px-4 py-2.5 bg-slate-200 dark:bg-slate-800 hover:bg-slate-300 dark:hover:bg-slate-700 text-slate-800 dark:text-slate-200 text-xs font-bold rounded-xl border border-slate-300 dark:border-slate-700 transition disabled:opacity-40 disabled:pointer-events-none">
                     &larr; Previous Lesson
@@ -187,25 +187,22 @@
 
                 <span id="topic-page-indicator" class="text-xs font-mono text-slate-500">0 of 0</span>
 
-                <button id="next-topic-btn" onclick="navigateTopic(1)" class="px-4 py-2.5 bg-sky-600 hover:bg-sky-500 text-white text-xs font-bold rounded-xl shadow transition disabled:opacity-40 disabled:pointer-events-none">
+                <button id="next-topic-btn" onclick="navigateTopic(1)" class="px-4 py-2.5 bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold rounded-xl shadow transition disabled:opacity-40 disabled:pointer-events-none">
                     Next Lesson &rarr;
                 </button>
             </div>
         </main>
     </div>
 
-    <!-- FOOTER -->
     <footer class="py-6 bg-slate-100 dark:bg-slate-950 border-t border-slate-200 dark:border-slate-800 text-center text-xs text-slate-500 transition-colors">
         ⚡ Eduvora Platform &copy; 2026. Interactive Course Reader.
     </footer>
 
-    <!-- SCRIPT LOGIC -->
     <script>
         let currentCourse = null;
         let activeTopicIndex = 0;
         let publishedTopics = [];
 
-        /* Theme Switcher Logic */
         function initTheme() {
             const isDark = localStorage.theme === "dark" || (!("theme" in localStorage) && window.matchMedia("(prefers-color-scheme: dark)").matches);
             document.documentElement.classList.toggle("dark", isDark);
@@ -240,11 +237,10 @@
             } else {
                 document.getElementById('course-main-title').textContent = 'No Course Selected';
                 document.getElementById('course-main-desc').textContent = 'Please choose a course from the catalog.';
-                document.getElementById('syllabus-sidebar-list').innerHTML = `<div class="p-4 text-center text-xs text-slate-400">No course ID specified.</div>`;
+                document.getElementById('syllabus-sidebar-list').innerHTML = `<div class="p-4 text-center text-xs text-slate-400">No course specified.</div>`;
             }
         });
 
-        // SMART ROUTING: Configures navigation targets dynamically
         function setupAuthSlot() {
             const token = localStorage.getItem('eduvora_token');
             const user = JSON.parse(localStorage.getItem('eduvora_user') || 'null');
@@ -253,21 +249,19 @@
             const backNavLink = document.getElementById('back-nav-link');
 
             if (token && user) {
-                // Logged in: Route Logo and Back Link to Dashboard
-                if (logoLink) logoLink.href = 'dashboard.html';
+                if (logoLink) logoLink.href = user.role === 'admin' ? 'admin/dashboard.html' : 'dashboard.html';
                 if (backNavLink) {
-                    backNavLink.href = 'dashboard.html';
+                    backNavLink.href = user.role === 'admin' ? 'admin/dashboard.html' : 'dashboard.html';
                     backNavLink.innerHTML = '&larr; Back to Dashboard';
                 }
 
                 slot.innerHTML = `
-                    <span class="hidden sm:inline-block text-xs font-medium text-slate-700 dark:text-slate-300">Welcome, <strong class="text-slate-900 dark:text-white">${escapeHtml(user.name)}</strong></span>
-                    <a href="dashboard.html" class="px-3.5 py-2 text-xs font-bold bg-sky-600 hover:bg-sky-500 text-white rounded-xl transition shadow">
+                    <span class="hidden sm:inline-block text-xs font-medium text-slate-700 dark:text-slate-300">Welcome, <strong class="text-emerald-500">${escapeHtml(user.name)}</strong></span>
+                    <a href="${user.role === 'admin' ? 'admin/dashboard.html' : 'dashboard.html'}" class="px-3.5 py-2 text-xs font-bold bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl transition shadow">
                         Dashboard
                     </a>
                 `;
             } else {
-                // Not logged in (Guest): Route Logo and Back Link to Landing Page
                 if (logoLink) logoLink.href = 'index.html';
                 if (backNavLink) {
                     backNavLink.href = 'index.html';
@@ -275,7 +269,7 @@
                 }
 
                 slot.innerHTML = `
-                    <a href="index.html" class="px-3.5 py-2 text-xs font-bold border border-slate-300 dark:border-slate-700 hover:border-sky-500 text-slate-700 dark:text-slate-200 rounded-xl transition">
+                    <a href="index.html" class="px-3.5 py-2 text-xs font-bold border border-slate-300 dark:border-slate-700 hover:border-emerald-500 text-slate-700 dark:text-slate-200 rounded-xl transition">
                         Sign In / Register
                     </a>
                 `;
@@ -302,7 +296,7 @@
                 console.error('Error fetching course:', err);
                 document.getElementById('course-main-title').textContent = 'Course Not Available';
                 document.getElementById('course-main-desc').textContent = 'Unable to fetch course content from the server.';
-                document.getElementById('syllabus-sidebar-list').innerHTML = `<div class="p-4 text-center text-xs text-rose-500">Failed to load content from server.</div>`;
+                document.getElementById('syllabus-sidebar-list').innerHTML = `<div class="p-4 text-center text-xs text-rose-500">Failed to load content.</div>`;
             }
         }
 
@@ -328,7 +322,7 @@
             return list.map((item, idx) => ({
                 moduleName: item.module_name || item.module || `Module ${Math.floor(idx / 5) + 1}`,
                 title: item.title || item.topic_title || `Lesson ${idx + 1}`,
-                content: item.content || item.body || item.description || 'No detailed content written yet for this topic.',
+                content: item.content || item.body || item.description || 'No detailed content written yet.',
                 code: item.code || item.code_snippet || null
             }));
         }
@@ -347,7 +341,7 @@
             document.getElementById('topic-count-label').textContent = `${topics.length} Lessons`;
 
             if (!topics || topics.length === 0) {
-                container.innerHTML = `<div class="p-6 text-center text-xs text-slate-500 font-mono">No topics published for this course yet.</div>`;
+                container.innerHTML = `<div class="p-6 text-center text-xs text-slate-500 font-mono">No topics published yet.</div>`;
                 return;
             }
 
@@ -365,7 +359,7 @@
                 }
 
                 html += `
-                    <button id="topic-link-${index}" onclick="loadTopic(${index})" class="topic-link w-full text-left px-3 py-2.5 rounded-xl text-xs text-slate-700 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-900 hover:text-slate-900 dark:hover:text-white transition flex items-center justify-between group">
+                    <button id="topic-link-${index}" onclick="loadTopic(${index})" class="topic-link w-full text-left px-3 py-2.5 rounded-xl text-xs text-slate-700 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-900 transition flex items-center justify-between group">
                         <span class="truncate pr-2">${escapeHtml(item.title)}</span>
                         <span class="text-[10px] font-mono opacity-40 group-hover:opacity-100">&rarr;</span>
                     </button>
@@ -440,7 +434,7 @@
         }
 
         function escapeHtml(text) {
-            return text ? text.replace(/[&<>"']/g, match => ({
+            return text ? String(text).replace(/[&<>"']/g, match => ({
                 '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
             }[match])) : '';
         }

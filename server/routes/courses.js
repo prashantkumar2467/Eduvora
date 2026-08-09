@@ -7,7 +7,9 @@ const { verifyToken, isAdmin } = require('../middleware/authMiddleware');
 router.get('/', courseController.getAllCourses);
 router.get('/:id', courseController.getCourseById);
 
-// Admin route to publish new courses
+// Admin routes to create, edit, and delete courses
 router.post('/', verifyToken, isAdmin, courseController.createCourse);
+router.put('/:id', verifyToken, isAdmin, courseController.updateCourse);
+router.delete('/:id', verifyToken, isAdmin, courseController.deleteCourse);
 
 module.exports = router;
